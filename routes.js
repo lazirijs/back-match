@@ -95,4 +95,13 @@ app.delete('/channel/remove/player/:uid', async (req, res) => {
   };
 });
 
+app.delete('/channel/remove/:uid', async (req, res) => {
+  try {
+    const result = await channel.remove(req.params.uid);
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).send(error);
+  };
+});
+
 module.exports = app;

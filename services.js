@@ -38,7 +38,6 @@ exports.channel = {
   },
   player: {
     add: async ({channel, fullname, birthday, solarImageLink, birthCertificateLink}) => {
-      console.log({channel, fullname, birthday, solarImageLink, birthCertificateLink});
       try {
         const result = await db.query(`INSERT INTO players (channel, fullname, birthday, solarImageLink, birthCertificateLink) VALUES ( $1, $2, $3, $4, $5 ) RETURNING *;`, [ channel, fullname, birthday, solarImageLink, birthCertificateLink ]);
         return result.rows[0];
@@ -65,5 +64,15 @@ exports.channel = {
         return error;
       };
     },
-  }
+  },
+  remove: async (uid) => {
+    try {
+      const players = await db.query(`DELETE FROM players WHERE channel = $1;`, [ uid ]);
+      const channel = await db.query(`DELETE FROM channels WHERE uid = $1;`, [ uid ]);
+
+      return players.command == 'DELETE' && channel.command == 'DELETE';
+    } catch (error) {
+      return error;
+    };
+  },
 };
