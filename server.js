@@ -33,11 +33,11 @@ app.get('/set-cookie', (req, res) => {
 
 // Read the cookie from the server
 app.get('/read-cookie', (req, res) => {
-  const jwtCookie = req.cookies?.jwt;
+  const jwtCookie = req.cookies['jwt'];
   if (jwtCookie) {
-    res.status(200).send({ message: 'Cookie read successfully', cookie: jwtCookie });
+    res.status(200).json({ message: 'Cookie read successfully', cookie: jwtCookie });
   } else {
-    res.status(204).send({ message: 'Cookie not found' });
+    res.status(204).json({ message: 'Cookie not found' });
   }
 });
 
