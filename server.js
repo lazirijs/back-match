@@ -27,7 +27,7 @@ const jwt = require('jsonwebtoken');
 // Set a cookie
 app.get('/set-cookie', (req, res) => {
   const value = 'partitioned-cookie-value';
-  res.setHeader('Set-Cookie', `jwt=${value}; Max-Age=3600; Path=/; HttpOnly; SameSite=Lax; Secure; Partitioned`);
+  res.setHeader('Set-Cookie', `jwt=${value}; Max-Age=3600; Path=/; HttpOnly; SameSite=None; Secure; Partitioned`);
   res.send('Cookie set successfully!');
 });
 
