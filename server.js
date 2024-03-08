@@ -24,44 +24,27 @@ app.get('/payed', (req, res, next) => {
 //------------------------------------------------------------------------------------------------------------------------------------
 const jwt = require('jsonwebtoken');
 
-// Generate a JWT token
-const token = jwt.sign({ userId: '123' }, 'your_secret_key', { expiresIn: '1h' });
-
-// Set the JWT as a cookie
-app.get('/loginJWT', (req, res) => {
-  res.cookie('jwt', token, {
-    httpOnly: true, // Set the HttpOnly flag
+// Set a cookie
+app.get('/set-cookie', (req, res) => {
+  res.cookie('jwt', 'your_jwt_token', {
+    httpOnly: true, // Set httpOnly to false to allow client-side access
     secure: true, // Set the Secure flag for HTTPS
-    sameSite: 'none', // Set the SameSite attribute
-    maxAge: 3600000 // Set the cookie expiration time (1 hour)
+    sameSite: 'none', // Set SameSite=None for cross-site cookies
+    maxAge: 3600000, // Set the cookie expiration time (1 hour)
+    domain: '.onrender.com' // Set the domain for the cookie
   });
 
-  res.send('Login successful!');
+  res.status(200).send({ message: 'Cookie set successfully' });
 });
 
-// Verify the JWT cookie on subsequent requests
-app.use((req, res, next) => {
-  const token = req.cookies?.jwt;
-  if (token) {
-    jwt.verify(token, 'your_secret_key', (err, decoded) => {
-      if (err) {
-        // Invalid token
-        return res.status(203).send('Invalid token');
-      }
-
-      // Set the decoded user data on the request object
-      req.user = decoded;
-      next();
-    });
+// Read the cookie from the server
+app.get('/read-cookie', (req, res) => {
+  const jwtCookie = req.cookies?.jwt;
+  if (jwtCookie) {
+    res.status(200).send({ message: 'Cookie read successfully', cookie: jwtCookie });
   } else {
-    // No token provided
-    return res.status(201).send('No token provided');
+    res.status(204).send({ message: 'Cookie not found' });
   }
-});
-
-// Protected route
-app.get('/protected', (req, res) => {
-  res.status(200).send({ message: 'Protected data', user: req.user });
 });
 
 //------------------------------------------------------------------------------------------------------------------------------------
