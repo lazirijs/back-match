@@ -31,7 +31,8 @@ app.get('/set-cookie', (req, res) => {
     secure: true, // Set the Secure flag for HTTPS
     sameSite: 'none', // Set SameSite=None for cross-site cookies
     maxAge: 3600000, // Set the cookie expiration time (1 hour)
-    domain: 'onrender.com' // Set the domain for the cookie
+    domain: 'onrender.com', // Set the domain for the cookie
+    partitioned: true, 
   });
 
   res.status(200).send({ message: 'Cookie set successfully' });
