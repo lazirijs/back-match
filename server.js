@@ -32,7 +32,7 @@ app.get('/loginJWT', (req, res) => {
   res.cookie('jwt', token, {
     httpOnly: true, // Set the HttpOnly flag
     secure: true, // Set the Secure flag for HTTPS
-    sameSite: 'strict', // Set the SameSite attribute
+    sameSite: 'lax', // Set the SameSite attribute
     maxAge: 3600000 // Set the cookie expiration time (1 hour)
   });
 
@@ -42,12 +42,12 @@ app.get('/loginJWT', (req, res) => {
 // Verify the JWT cookie on subsequent requests
 app.use((req, res, next) => {
   const token = req.cookies?.jwt;
-  console.log(req, 'Invalid token', req.cookies, token)
+  console.log('Invalid token', req.cookies, token)
   if (token) {
     jwt.verify(token, 'your_secret_key', (err, decoded) => {
       if (err) {
         // Invalid token
-        return res.status(403).json({ message: 'Invalid token' });
+        return res.status(203).send({ message: 'Invalid token' });
       }
 
       // Set the decoded user data on the request object
@@ -56,7 +56,7 @@ app.use((req, res, next) => {
     });
   } else {
     // No token provided
-    return res.status(401).json({ message: 'No token provided', ...req });
+    return res.status(201).send({ message: 'No token provided', ...req });
   }
 });
 
