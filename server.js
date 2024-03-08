@@ -42,12 +42,11 @@ app.get('/loginJWT', (req, res) => {
 // Verify the JWT cookie on subsequent requests
 app.use((req, res, next) => {
   const token = req.cookies?.jwt;
-  console.log('Invalid token', req.cookies, token)
   if (token) {
     jwt.verify(token, 'your_secret_key', (err, decoded) => {
       if (err) {
         // Invalid token
-        return res.status(203).send({ message: 'Invalid token' });
+        return res.status(203).send('Invalid token');
       }
 
       // Set the decoded user data on the request object
@@ -56,7 +55,9 @@ app.use((req, res, next) => {
     });
   } else {
     // No token provided
-    return res.status(201).send({ message: 'No token provided', ...req });
+    
+    console.log(req)
+    return res.status(201).send('No token provided');
   }
 });
 
