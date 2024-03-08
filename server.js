@@ -31,7 +31,7 @@ app.get('/set-cookie', (req, res) => {
     secure: true, // Set the Secure flag for HTTPS
     sameSite: 'none', // Set SameSite=None for cross-site cookies
     maxAge: 3600000, // Set the cookie expiration time (1 hour)
-    key=("https://front-match.onrender.com")
+    key: ["https://front-match.onrender.com"]
   });
 
   res.status(200).send({ message: 'Cookie set successfully' });
