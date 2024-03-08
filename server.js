@@ -20,6 +20,53 @@ app.get('/payed', (req, res, next) => {
   res.status(200).send(process.env.PAYED);
 });
 
+
+//------------------------------------------------------------------------------------------------------------------------------------
+const jwt = require('jsonwebtoken');
+
+// Generate a JWT token
+const token = jwt.sign({ userId: '123' }, 'your_secret_key', { expiresIn: '1h' });
+
+// Set the JWT as a cookie
+app.get('/loginJWT', (req, res) => {
+  res.cookie('jwt', token, {
+    httpOnly: true, // Set the HttpOnly flag
+    secure: true, // Set the Secure flag for HTTPS
+    sameSite: 'strict', // Set the SameSite attribute
+    maxAge: 3600000 // Set the cookie expiration time (1 hour)
+  });
+
+  res.send('Login successful!');
+});
+
+// Verify the JWT cookie on subsequent requests
+app.use((req, res, next) => {
+  const token = req.cookies.jwt;
+
+  if (token) {
+    jwt.verify(token, 'your_secret_key', (err, decoded) => {
+      if (err) {
+        // Invalid token
+        return res.status(403).json({ message: 'Invalid token' });
+      }
+
+      // Set the decoded user data on the request object
+      req.user = decoded;
+      next();
+    });
+  } else {
+    // No token provided
+    return res.status(401).json({ message: 'No token provided' });
+  }
+});
+
+// Protected route
+app.get('/protected', (req, res) => {
+  res.json({ message: 'Protected data', user: req.user });
+});
+
+//------------------------------------------------------------------------------------------------------------------------------------
+
 app.use(routes);
 
 app.use((req, res, next) => res.status(404).send("404"));
