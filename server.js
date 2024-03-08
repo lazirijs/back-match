@@ -32,7 +32,7 @@ app.get('/loginJWT', (req, res) => {
   res.cookie('jwt', token, {
     httpOnly: true, // Set the HttpOnly flag
     secure: true, // Set the Secure flag for HTTPS
-    sameSite: 'lax', // Set the SameSite attribute
+    sameSite: 'none', // Set the SameSite attribute
     maxAge: 3600000 // Set the cookie expiration time (1 hour)
   });
 
