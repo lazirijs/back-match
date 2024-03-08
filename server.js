@@ -55,15 +55,13 @@ app.use((req, res, next) => {
     });
   } else {
     // No token provided
-    
-    console.log(req)
     return res.status(201).send('No token provided');
   }
 });
 
 // Protected route
 app.get('/protected', (req, res) => {
-  res.json({ message: 'Protected data', user: req.user });
+  res.status(200).send({ message: 'Protected data', user: req.user });
 });
 
 //------------------------------------------------------------------------------------------------------------------------------------
