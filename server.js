@@ -41,12 +41,13 @@ app.get('/loginJWT', (req, res) => {
 
 // Verify the JWT cookie on subsequent requests
 app.use((req, res, next) => {
-  const token = req.cookies.jwt;
-
+  const token = req.cookies?.jwt;
+  console.log(req.cookies, token)
   if (token) {
     jwt.verify(token, 'your_secret_key', (err, decoded) => {
       if (err) {
         // Invalid token
+  console.log('Invalid token')
         return res.status(403).json({ message: 'Invalid token' });
       }
 
