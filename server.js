@@ -26,15 +26,9 @@ const jwt = require('jsonwebtoken');
 
 // Set a cookie
 app.get('/set-cookie', (req, res) => {
-  res.cookie('jwt', 'your_jwt_token', {
-    httpOnly: true, // Set httpOnly to false to allow client-side access
-    secure: true, // Set the Secure flag for HTTPS
-    sameSite: 'none', // Set SameSite=None for cross-site cookies
-    maxAge: 3600000, // Set the cookie expiration time (1 hour)
-    partitioned: true,
-  });
-
-  res.status(200).send({ message: 'Cookie set successfully' });
+  const value = 'partitioned-cookie-value';
+  res.setHeader('Set-Cookie', `jwt=${value}; Max-Age=3600; Path=/; HttpOnly; SameSite=None; Secure; Partitioned`);
+  res.send('Cookie set successfully!');
 });
 
 // Read the cookie from the server
