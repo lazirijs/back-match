@@ -42,7 +42,7 @@ app.get('/read-cookie', (req, res) => {
     res.status(200).send({ message: 'Cookie read successfully', cookie: jwtCookie });
   } else {
     console.log({ message: 'Cookie not found' });
-    res.status(204).send({ message: 'Cookie not found' });
+    res.status(204).send(JSON.stringify({ message: 'Cookie not found', req }));
   }
 });
 
