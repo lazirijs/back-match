@@ -1,12 +1,17 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-
-dotenv.config();
+const cookieParser = require('cookie-parser');
 
 const db = require("./database");
 
+// Create an Express app
 const app = express();
+
+// Use cookie-parser middleware
+app.use(cookieParser());
+
+dotenv.config();
 
 app.use(express.json());
 app.use(cors({
@@ -22,8 +27,6 @@ app.get('/payed', (req, res, next) => {
 
 
 //------------------------------------------------------------------------------------------------------------------------------------
-const jwt = require('jsonwebtoken');
-
 // Set a cookie
 app.get('/set-cookie', (req, res) => {
   const value = 'partitioned-cookie-value';
